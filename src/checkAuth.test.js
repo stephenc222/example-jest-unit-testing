@@ -22,4 +22,11 @@ describe('checkAuth', () => {
     const testResult = await checkAuth()
     expect(testResult).toEqual(expect.objectContaining({ jack: 10 }))
   })
+  it('returns with null if "authUser" throws', async () => {
+    const authUser = jest.requireMock('./authUser').default
+    authUser.mockImplementation(() => { throw new Error('authUser failed') })
+    const checkAuth = require('./checkAuth').default
+    const testResult = await checkAuth()
+    expect(testResult).toEqual(null)
+  })
 })
